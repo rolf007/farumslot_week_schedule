@@ -47,7 +47,10 @@ styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
 
 styleBH = styles["Normal"]
-styleBH.alignment = TA_LEFT
+styleBH.alignment = TA_CENTER
+
+styleNotes = ParagraphStyle("Notes")
+styleNotes.alignment = TA_LEFT
 
 class RTalbe:
     def __init__(self, table, w, h):
@@ -85,6 +88,7 @@ img_C = Image("C.png", day_height/6, day_height/6)
 img_H = Image("H.png", day_height/6, day_height/6)
 img_A = Image("A.png", day_height/6, day_height/6)
 img_S = Image("S.png", day_height/6, day_height/6)
+img_Dannebrog = Image("Dannebrog.png", day_height/6, day_height/6)
 def mk_inner_food(fun, width, eaters):
     square = food_height/6
     subtable = Table([
@@ -160,16 +164,40 @@ def add_task(fields, day, person, task):
 def mk_simple_task(name):
     return RTalbe(Paragraph(name, style=styleBH), None, None)
 
+def mk_simple_note(name):
+    return RTalbe(Paragraph(name, style=styleNotes), None, None)
+
+def mk_birthday_note(name):
+    content = RTalbe(Paragraph(name, style=styleNotes), person_width, 15)
+    frame_size = 30
+    frame_color = col_K
+    subtable = Table([[img_Dannebrog,content.table]], colWidths = [frame_size, content.w], rowHeights=[content.h])
+
+    subtable.setStyle(TableStyle([
+                           ('VALIGN',(0,0),(-1,-1),"TOP"),
+                           ('BACKGROUND',(0,0),(-1,-1),HexColor("#ffffff")),
+                           ('LEFTPADDING',(0,0),(-1,-1), 0),
+                           ('RIGHTPADDING',(0,0),(-1,-1), 0),
+                           ('TOPPADDING',(0,0),(-1,-1), 0),
+                           ('BOTTOMPADDING',(0,0),(-1,-1), 0)
+                           ]))
+    return RTalbe(subtable, content.w + frame_size, content.h)
+
+    return mk_frame_lr(RTalbe(Paragraph(name, style=styleNotes), person_width-60, 15), 30, col_K)
+
 def mk_week_day(name):
     return RTalbe(Paragraph(name, style=styleBH), None, None)
 
 def mk_big_task(name, color):
     return mk_frame_lr(RTalbe(Paragraph(name, style=styleBH), person_width-10, 15), 5, color)
 
+def mk_food_task(name, color):
+    return mk_frame_lr(RTalbe(Paragraph(name, style=styleBH), person_width-60, 15), 30, color)
+
 def mk_person(name, color):
     return mk_frame_tb(RTalbe(Paragraph(name, style=styleBH), person_width, 15), 5, color)
 
-def mk_food_task(color, name, eaters):
+def mk_food_field(color, name, eaters):
     food_frame_width = 5
     inner_food = mk_inner_food(mk_frame(RTalbe(name,food_width-food_height/3-2*food_frame_width,day_height-2*food_frame_width), 5, color).table, food_width, eaters)
     return inner_food
@@ -189,13 +217,79 @@ class MarkDay:
         self.type = type
 
 mark_days = [
-        MarkDay(year=2017, month=11, day=11, name="Mortens Aften", type=MarkDayType.Note),
+        MarkDay(year=None, month=1, day=1, name="Nyt&aring;rsdag", type=MarkDayType.Note),
+        MarkDay(year=None, month=1, day=6, name="Hellig tre konger", type=MarkDayType.Note),
+        MarkDay(year=None, month=2, day=14, name="Valentinsdag", type=MarkDayType.Note),
+        MarkDay(year=None, month=6, day=23, name="Sankt Hans Aften", type=MarkDayType.Note),
+        MarkDay(year=None, month=6, day=5, name="Fars dag", type=MarkDayType.Note),
+        MarkDay(year=None, month=6, day=5, name="Grundlovsdag", type=MarkDayType.Note),
+        MarkDay(year=None, month=10, day=31, name="Halloween", type=MarkDayType.Note),
+        MarkDay(year=None, month=11, day=10, name="Mortens Aften", type=MarkDayType.Note),
         MarkDay(year=None, month=12, day=24, name="Juleaftens dag", type=MarkDayType.Holiday),
+        MarkDay(year=None, month=12, day=25, name="Juledag", type=MarkDayType.Holiday),
+        MarkDay(year=None, month=12, day=26, name="2. Juledag", type=MarkDayType.Holiday),
+        MarkDay(year=None, month=12, day=31, name="Nyt&aring;rsaften", type=MarkDayType.Holiday),
+
+        MarkDay(year=1975, month= 2, day= 9, name="Rolf", type=MarkDayType.Birthday),
+        MarkDay(year=1973, month= 9, day= 7, name="Karen", type=MarkDayType.Birthday),
+        MarkDay(year=2001, month= 1, day=13, name="Cecilia", type=MarkDayType.Birthday),
+        MarkDay(year=2002, month= 9, day=13, name="Helena", type=MarkDayType.Birthday),
+        MarkDay(year=2005, month= 4, day= 8, name="Adam", type=MarkDayType.Birthday),
         MarkDay(year=2006, month=12, day=18, name="Samuel", type=MarkDayType.Birthday),
-        MarkDay(year=2017, month=12, day=25, name="Juledag", type=MarkDayType.Holiday),
-        MarkDay(year=2017, month=12, day=26, name="2. Juledag", type=MarkDayType.Holiday),
-        MarkDay(year=2017, month=12, day=31, name="Nyt&aring;rsaften", type=MarkDayType.Holiday)
-        ]
+        MarkDay(year=1981, month=11, day=24, name="Karina", type=MarkDayType.Birthday),
+        MarkDay(year=1981, month=11, day=24, name="Jakob", type=MarkDayType.Birthday),
+        MarkDay(year=1985, month= 4, day= 9, name="Marcus", type=MarkDayType.Birthday),
+        MarkDay(year=1979, month= 5, day= 5, name="Linda", type=MarkDayType.Birthday),
+        MarkDay(year=1973, month= 3, day=18, name="Thor", type=MarkDayType.Birthday),
+        MarkDay(year=1974, month= 7, day= 3, name="Takako", type=MarkDayType.Birthday),
+        MarkDay(year=1943, month= 3, day=16, name="Anita", type=MarkDayType.Birthday),
+        MarkDay(year=1944, month=10, day=25, name="Gert", type=MarkDayType.Birthday),
+        MarkDay(year=2008, month= 8, day=31, name="Oliver", type=MarkDayType.Birthday),
+        MarkDay(year=2013, month= 1, day= 7, name="Victor", type=MarkDayType.Birthday),
+
+        MarkDay(year=2018, month=2, day=11, name="Fastelavn", type=MarkDayType.Note),
+        MarkDay(year=2018, month=3, day=25, name="Palmes&oslash;ndag", type=MarkDayType.Note),
+        MarkDay(year=2018, month=3, day=25, name="Sommertid starter", type=MarkDayType.Note),
+        MarkDay(year=2018, month=3, day=29, name="Sk&aelig;rtorsdag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=3, day=30, name="Langfredag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=4, day=1, name="P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=4, day=2, name="2. P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=4, day=27, name="Store Bededag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=5, day=10, name="Kristi Himmelfart", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=5, day=13, name="Mors dag", type=MarkDayType.Note),
+        MarkDay(year=2018, month=5, day=20, name="Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=5, day=21, name="2. Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2018, month=10, day=28, name="Sommertid slutter", type=MarkDayType.Note),
+
+        MarkDay(year=2019, month=3, day=3, name="Fastelavn", type=MarkDayType.Note),
+        MarkDay(year=2019, month=3, day=31, name="Sommertid starter", type=MarkDayType.Note),
+        MarkDay(year=2019, month=4, day=14, name="Palmes&oslash;ndag", type=MarkDayType.Note),
+        MarkDay(year=2019, month=4, day=18, name="Sk&aelig;rtorsdag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=4, day=19, name="Langfredag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=4, day=21, name="P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=4, day=22, name="2. P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=5, day=12, name="Mors dag", type=MarkDayType.Note),
+        MarkDay(year=2019, month=5, day=17, name="Store Bededag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=5, day=30, name="Kristi Himmelfart", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=6, day=9, name="Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=6, day=10, name="2. Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2019, month=10, day=27, name="Sommertid slutter", type=MarkDayType.Note),
+
+        MarkDay(year=2020, month=2, day=23, name="Fastelavn", type=MarkDayType.Note),
+        MarkDay(year=2020, month=3, day=29, name="Sommertid starter", type=MarkDayType.Note),
+        MarkDay(year=2020, month=4, day=5, name="Palmes&oslash;ndag", type=MarkDayType.Note),
+        MarkDay(year=2020, month=4, day=9, name="Sk&aelig;rtorsdag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=4, day=10, name="Langfredag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=4, day=12, name="P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=4, day=13, name="2. P&aring;skedag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=5, day=8, name="Store Bededag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=5, day=10, name="Mors dag", type=MarkDayType.Note),
+        MarkDay(year=2020, month=5, day=21, name="Kristi Himmelfart", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=5, day=31, name="Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=6, day=1, name="2. Pinsedag", type=MarkDayType.Holiday),
+        MarkDay(year=2020, month=10, day=25, name="Sommertid slutter", type=MarkDayType.Note),
+
+ ]
 #https://www.kalender-365.dk/helligdage/2017.html
 
 def is_holiday(year, week, week_day):
@@ -255,7 +349,7 @@ def main_table_style():
     for day in range(Day.Monday.value, Day.Sunday.value+1):
         m = day
         if is_holiday(year, week, day):
-            style.append(('BACKGROUND', (0, m), (-1, m), HexColor("#ffdddd")))
+            style.append(('BACKGROUND', (0, m), (0, m), HexColor("#ffdddd")))
     return style
 
 def page0():
@@ -280,12 +374,6 @@ def page0():
     add_task(fields, Day.Saturday, Person.Header, mk_week_day("L&oslash;rdag %s" % day_str(6)))
     add_task(fields, Day.Sunday, Person.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
 
-    #if even_week:
-    #    add_task(fields, Day.Wednesday, Person.Header, mk_food_task(col_W, "RK"))
-    #if odd_week:
-    #    add_task(fields, Day.Friday, Person.Header, mk_food_task(col_W, "RK"))
-    #    add_task(fields, Day.Saturday, Person.Header, mk_food_task(col_W, "RK"))
-
     add_task(fields, Day.Monday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Tuesday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Wednesday, Person.Rolf, mk_simple_task("Vande planter"))
@@ -294,10 +382,10 @@ def page0():
     add_task(fields, Day.Saturday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Sunday, Person.Rolf, mk_simple_task("Vande planter"))
     if odd_week:
-        add_task(fields, Day.Wednesday, Person.Rolf, mk_big_task("Mad", col_R))
-        add_task(fields, Day.Sunday, Person.Rolf, mk_big_task("Mad", col_R))
+        add_task(fields, Day.Wednesday, Person.Rolf, mk_food_task("Mad", col_R))
+        add_task(fields, Day.Sunday, Person.Rolf, mk_food_task("Mad", col_R))
     if even_week:
-        add_task(fields, Day.Friday, Person.Rolf, mk_big_task("Mad", col_R))
+        add_task(fields, Day.Friday, Person.Rolf, mk_food_task("Mad", col_R))
     add_task(fields, Day.Saturday, Person.Rolf, mk_big_task("St&oslash;vsuge", col_R))
 
 
@@ -310,7 +398,7 @@ def page0():
     add_task(fields, Day.Sunday, Person.Karen, mk_simple_task("Vasket&oslash;j"))
     add_task(fields, Day.Wednesday, Person.Karen, mk_big_task("Nemlig", col_K))
     if even_week:
-        add_task(fields, Day.Saturday, Person.Karen, mk_big_task("Mad", col_K))
+        add_task(fields, Day.Saturday, Person.Karen, mk_food_task("Mad", col_K))
 
     add_task(fields, Day.Monday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Tuesday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
@@ -319,14 +407,14 @@ def page0():
     add_task(fields, Day.Friday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Saturday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Sunday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
-    add_task(fields, Day.Thursday, Person.Cecilia, mk_big_task("Mad", col_C))
+    add_task(fields, Day.Thursday, Person.Cecilia, mk_food_task("Mad", col_C))
     add_task(fields, Day.Saturday, Person.Cecilia, mk_big_task("Toilet", col_C))
 
     if even_week:
-        add_task(fields, Day.Sunday, Person.Helena, mk_big_task("Mad", col_H))
+        add_task(fields, Day.Sunday, Person.Helena, mk_food_task("Mad", col_H))
     add_task(fields, Day.Saturday, Person.Helena, mk_big_task("Badev&aelig;relse", col_H))
 
-    add_task(fields, Day.Tuesday, Person.Adam, mk_big_task("Mad", col_A))
+    add_task(fields, Day.Tuesday, Person.Adam, mk_food_task("Mad", col_A))
     add_task(fields, Day.Wednesday, Person.Adam, mk_big_task("St&oslash;vsuge", col_A))
     add_task(fields, Day.Monday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Tuesday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
@@ -339,7 +427,7 @@ def page0():
     if even_week:
         add_task(fields, Day.Saturday, Person.Adam, mk_simple_task("Fodbold"))
 
-    add_task(fields, Day.Monday, Person.Samuel, mk_big_task("Mad", col_S))
+    add_task(fields, Day.Monday, Person.Samuel, mk_food_task("Mad", col_S))
     add_task(fields, Day.Tuesday, Person.Samuel, mk_simple_task("Fodbold kl 16:30"))
     add_task(fields, Day.Thursday, Person.Samuel, mk_simple_task("Fodbold kl 16:30"))
     add_task(fields, Day.Friday, Person.Samuel, mk_simple_task("Fodbold kl 15:00"))
@@ -386,31 +474,34 @@ def page1():
     add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
 
     if even_week:
-        add_task(fields, Day.Wednesday, Page1.Food, mk_food_task(col_W, "", "RK"))
+        add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_W, "", "RK"))
     if odd_week:
-        add_task(fields, Day.Friday, Page1.Food, mk_food_task(col_W, "", "RK"))
-        add_task(fields, Day.Saturday, Page1.Food, mk_food_task(col_W, "", "RK"))
+        add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_W, "", "RK"))
+        add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_W, "", "RK"))
 
     if odd_week:
-        add_task(fields, Day.Wednesday, Page1.Food, mk_food_task(col_R, "Rolf:", "RKCHAS"))
-        add_task(fields, Day.Sunday, Page1.Food, mk_food_task(col_R, "Rolf:", "RKCHAS"))
+        add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
+        add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
     if even_week:
-        add_task(fields, Day.Friday, Page1.Food, mk_food_task(col_R, "Rolf:", "RKCHAS"))
+        add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
 
     if even_week:
-        add_task(fields, Day.Saturday, Page1.Food, mk_food_task(col_K, "Karen:", "RKCHAS"))
+        add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_K, "Karen:", "RKCHAS"))
 
-    add_task(fields, Day.Thursday, Page1.Food, mk_food_task(col_C, "Cecilia:", "RKCHAS"))
+    add_task(fields, Day.Thursday, Page1.Food, mk_food_field(col_C, "Cecilia:", "RKCHAS"))
     if even_week:
-        add_task(fields, Day.Sunday, Page1.Food, mk_food_task(col_H, "Helena:", "RKCHAS"))
-    add_task(fields, Day.Tuesday, Page1.Food, mk_food_task(col_A, "Adam:", "RKCHAS"))
-    add_task(fields, Day.Monday, Page1.Food, mk_food_task(col_S, "Samuel:", "RKCHAS"))
+        add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_H, "Helena:", "RKCHAS"))
+    add_task(fields, Day.Tuesday, Page1.Food, mk_food_field(col_A, "Adam:", "RKCHAS"))
+    add_task(fields, Day.Monday, Page1.Food, mk_food_field(col_S, "Samuel:", "RKCHAS"))
 
     for day in Day:
         if day == Day.Header:
             continue
         for note in get_mark_days(year, week, day.value):
-            add_task(fields, day, Page1.Notes, mk_simple_task(note.name))
+            if note.type == MarkDayType.Birthday:
+                add_task(fields, day, Page1.Notes, mk_birthday_note(note.name))
+            else:
+                add_task(fields, day, Page1.Notes, mk_simple_note(note.name))
 
     data = []
     for day in Day:
