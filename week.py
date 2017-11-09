@@ -24,7 +24,7 @@ col_H = HexColor("#6f0511")
 col_W = HexColor("#ffffff")
 
 year = 2017
-week = 46
+week = 47
 
 if False:
     layout = portrait(A4)
@@ -168,9 +168,52 @@ def mk_food_task(color, name, eaters):
     inner_food = mk_inner_food(mk_frame(RTalbe(name,food_width-food_height/3-2*food_frame_width,day_height-2*food_frame_width), 5, color).table, food_width, eaters)
     return inner_food
 
+class MarkDayType(Enum):
+    Note = 0
+    Aniversary = 1
+    Birthday = 2
+    Holiday = 3
+
+class MarkDay:
+    def __init__(self, year, month, day, name, type):
+        self.year = year
+        self.month = month
+        self.day = day
+        self.name = name
+        self.type = type
+
+mark_days = [
+        MarkDay(year=2017, month=11, day=11, name="Mortens Aften", type=MarkDayType.Note),
+        MarkDay(year=None, month=12, day=24, name="Juleaftens dag", type=MarkDayType.Holiday),
+        MarkDay(year=2006, month=12, day=18, name="Samuel", type=MarkDayType.Birthday),
+        MarkDay(year=2017, month=12, day=25, name="Juledag", type=MarkDayType.Holiday),
+        MarkDay(year=2017, month=12, day=26, name="2. Juledag", type=MarkDayType.Holiday),
+        MarkDay(year=2017, month=12, day=31, name="Nyt&aring;rsaften", type=MarkDayType.Holiday)
+        ]
+#https://www.kalender-365.dk/helligdage/2017.html
+
+def is_holiday(year, week, week_day):
+    if week_day ==6 or week_day == 7:
+        return True
+    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
+    for markday in mark_days:
+        if markday.type == MarkDayType.Holiday and (markday.year == date.year or markday.year == None) and markday.month == date.month and markday.day == date.day:
+            return True
+    return False
+
+def get_mark_days(year, week, week_day):
+    notes = []
+    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
+    for markday in mark_days:
+        if markday.month == date.month and markday.day == date.day:
+            if (markday.type == MarkDayType.Note or markday.type == MarkDayType.Holiday) and (markday.year == date.year or markday.year == None):
+                notes.append(markday)
+            if markday.type == MarkDayType.Aniversary or markday.type == MarkDayType.Birthday:
+                notes.append(markday)
+    return notes
 
 def day_str(week_day):
-    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day), "%Y-W%W-%w")
+    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
     return date.strftime("%d %b")
 
 
@@ -190,6 +233,24 @@ def make_field_table(field):
                            ('BOTTOMPADDING',(0,0),(-1,-1), 0)
                            ]))
     return subtable
+
+def main_table_style():
+    style = [
+             ('BACKGROUND',(0,0),(0,-1),HexColor("#C0C0C0")),
+             ('VALIGN',(0,0),(-1,-1),"TOP"),
+             ('LEFTPADDING',(0,0),(-1,-1), 0),
+             ('RIGHTPADDING',(0,0),(-1,-1), 0),
+             ('TOPPADDING',(0,0),(-1,-1), 0),
+             ('BOTTOMPADDING',(0,0),(-1,-1), 0),
+             ('GRID',(0,0),(-1,-1),1,(0,0,0,)),
+             #('BOX', (2,2), (3,3), 6, HexColor("#00FF00"))
+             ('FONT', (0,0), (0,0), 'Helvetica-Bold')
+             ]
+    for day in range(Day.Monday.value, Day.Sunday.value+1):
+        m = day
+        if is_holiday(year, week, day):
+            style.append(('BACKGROUND', (0, m), (-1, m), HexColor("#ffdddd")))
+    return style
 
 def page0():
     odd_week = bool(week%2)
@@ -211,7 +272,7 @@ def page0():
     add_task(fields, Day.Thursday, Person.Header, mk_week_day("Torsdag %s" % day_str(4)))
     add_task(fields, Day.Friday, Person.Header, mk_week_day("Fredag %s" % day_str(5)))
     add_task(fields, Day.Saturday, Person.Header, mk_week_day("L&oslash;rdag %s" % day_str(6)))
-    add_task(fields, Day.Sunday, Person.Header, mk_week_day("S&oslash;ndag %s" % day_str(0)))
+    add_task(fields, Day.Sunday, Person.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
 
     #if even_week:
     #    add_task(fields, Day.Wednesday, Person.Header, mk_food_task(col_W, "RK"))
@@ -268,6 +329,9 @@ def page0():
     add_task(fields, Day.Friday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Saturday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Sunday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
+    add_task(fields, Day.Thursday, Person.Adam, mk_simple_task("Fodbold"))
+    if even_week:
+        add_task(fields, Day.Saturday, Person.Adam, mk_simple_task("Fodbold"))
 
     add_task(fields, Day.Monday, Person.Samuel, mk_big_task("Mad", col_S))
     add_task(fields, Day.Tuesday, Person.Samuel, mk_simple_task("Fodbold kl 16:30"))
@@ -281,10 +345,7 @@ def page0():
     add_task(fields, Day.Saturday, Person.Samuel, mk_big_task("Feje k&oslash;kken", col_S))
     add_task(fields, Day.Sunday, Person.Samuel, mk_big_task("Feje k&oslash;kken", col_S))
     add_task(fields, Day.Monday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
-    add_task(fields, Day.Tuesday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
     add_task(fields, Day.Wednesday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
-    add_task(fields, Day.Thursday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
-    add_task(fields, Day.Friday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
     add_task(fields, Day.Saturday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
     add_task(fields, Day.Sunday, Person.Samuel, mk_big_task("D&aelig;k bord", col_S))
     data = []
@@ -296,20 +357,8 @@ def page0():
 
     b = Table(data, colWidths=[day_width,person_width,person_width,person_width,person_width,person_width,person_width],
             rowHeights=[person_height, day_height, day_height, day_height, day_height, day_height, day_height, day_height])
-
     b.hAlign = "LEFT"
-    b.setStyle(TableStyle([
-                               ('BACKGROUND',(0,0),(-1,0),HexColor("#C0C0C0")),
-                               ('BACKGROUND',(0,0),(0,-1),HexColor("#C0C0C0")),
-                               ('VALIGN',(0,0),(-1,-1),"TOP"),
-                               ('LEFTPADDING',(0,0),(-1,-1), 0),
-                               ('RIGHTPADDING',(0,0),(-1,-1), 0),
-                               ('TOPPADDING',(0,0),(-1,-1), 0),
-                               ('BOTTOMPADDING',(0,0),(-1,-1), 0),
-                               ('GRID',(0,0),(-1,-1),1,(0,0,0,)),
-                               #('BOX', (2,2), (3,3), 6, HexColor("#00FF00"))
-                               ('FONT', (0,0), (0,0), 'Helvetica-Bold')
-                               ]))
+    b.setStyle(main_table_style())
     return b
 
 def page1():
@@ -328,7 +377,7 @@ def page1():
     add_task(fields, Day.Thursday, Page1.Header, mk_week_day("Torsdag %s" % day_str(4)))
     add_task(fields, Day.Friday, Page1.Header, mk_week_day("Fredag %s" % day_str(5)))
     add_task(fields, Day.Saturday, Page1.Header, mk_week_day("L&oslash;rdag %s" % day_str(6)))
-    add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(0)))
+    add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
 
     if even_week:
         add_task(fields, Day.Wednesday, Page1.Food, mk_food_task(col_W, "", "RK"))
@@ -351,6 +400,12 @@ def page1():
     add_task(fields, Day.Tuesday, Page1.Food, mk_food_task(col_A, "Adam:", "RKCHAS"))
     add_task(fields, Day.Monday, Page1.Food, mk_food_task(col_S, "Samuel:", "RKCHAS"))
 
+    for day in Day:
+        if day == Day.Header:
+            continue
+        for note in get_mark_days(year, week, day.value):
+            add_task(fields, day, Page1.Notes, mk_simple_task(note.name))
+
     data = []
     for day in Day:
         row = []
@@ -360,20 +415,8 @@ def page1():
 
     b = Table(data, colWidths=[day_width,food_width,food_width],
             rowHeights=[person_height, day_height, day_height, day_height, day_height, day_height, day_height, day_height])
-
     b.hAlign = "LEFT"
-    b.setStyle(TableStyle([
-                               ('BACKGROUND',(0,0),(-1,0),HexColor("#C0C0C0")),
-                               ('BACKGROUND',(0,0),(0,-1),HexColor("#C0C0C0")),
-                               ('VALIGN',(0,0),(-1,-1),"TOP"),
-                               ('LEFTPADDING',(0,0),(-1,-1), 0),
-                               ('RIGHTPADDING',(0,0),(-1,-1), 0),
-                               ('TOPPADDING',(0,0),(-1,-1), 0),
-                               ('BOTTOMPADDING',(0,0),(-1,-1), 0),
-                               ('GRID',(0,0),(-1,-1),1,(0,0,0,)),
-                               #('BOX', (2,2), (3,3), 6, HexColor("#00FF00"))
-                               ('FONT', (0,0), (0,0), 'Helvetica-Bold')
-                               ]))
+    b.setStyle(main_table_style())
     return b
 
 
