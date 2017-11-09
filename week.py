@@ -79,15 +79,21 @@ class Day(Enum):
     Saturday = 6
     Sunday = 7
 
+img_R = Image("R.png", day_height/6, day_height/6)
+img_K = Image("K.png", day_height/6, day_height/6)
+img_C = Image("C.png", day_height/6, day_height/6)
+img_H = Image("H.png", day_height/6, day_height/6)
+img_A = Image("A.png", day_height/6, day_height/6)
+img_S = Image("S.png", day_height/6, day_height/6)
 def mk_inner_food(fun, width, eaters):
     square = food_height/6
     subtable = Table([
-        [fun,  'R' if 'R' in eaters else ' ',""],
-        ["",   "K" if 'K' in eaters else ' ',""],
-        ["",   "C" if 'C' in eaters else ' ',""],
-        ["",   "H" if 'H' in eaters else ' ',""],
-        ["",   "A" if 'A' in eaters else ' ',""],
-        ["",   "S" if 'S' in eaters else ' ',""]
+        [fun,  img_R if 'R' in eaters else ' ',""],
+        ["",   img_K if 'K' in eaters else ' ',""],
+        ["",   img_C if 'C' in eaters else ' ',""],
+        ["",   img_H if 'H' in eaters else ' ',""],
+        ["",   img_A if 'A' in eaters else ' ',""],
+        ["",   img_S if 'S' in eaters else ' ',""]
         ], colWidths = [width-2*square, square, square], rowHeights=[square, square, square, square, square, square])
     subtable.setStyle(TableStyle([
                            ('VALIGN',(0,0),(-1,-1),"TOP"),
