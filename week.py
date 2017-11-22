@@ -24,23 +24,15 @@ col_H = HexColor("#6f0511")
 col_W = HexColor("#ffffff")
 
 year = 2017
-week = 47
+week = 48
 
-if False:
-    layout = portrait(A4)
-    day_width = 45
-    day_height = 109
-    person_width = 76
-    person_height = 25
-    food_height = 70
-else:
-    layout = landscape(A4)
-    day_width = 45
-    day_height = 78
-    person_width = 123
-    person_height = 25
-    food_height = 78
-    food_width = 250
+layout = landscape(A4)
+day_width = 55
+day_height = 78
+person_width = 123
+person_height = 25
+food_height = 78
+food_width = 250
 
 
 styles = getSampleStyleSheet()
@@ -48,9 +40,15 @@ styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
 
 styleBH = styles["Normal"]
 styleBH.alignment = TA_CENTER
+styleBH.fontSize=14
 
 styleNotes = ParagraphStyle("Notes")
 styleNotes.alignment = TA_LEFT
+styleNotes.fontSize=14
+
+styleFoodField = ParagraphStyle("FoodField")
+styleFoodField.alignment = TA_LEFT
+styleFoodField.fontSize=14
 
 class RTalbe:
     def __init__(self, table, w, h):
@@ -199,7 +197,7 @@ def mk_person(name, color):
 
 def mk_food_field(color, name, eaters):
     food_frame_width = 5
-    inner_food = mk_inner_food(mk_frame(RTalbe(name,food_width-food_height/3-2*food_frame_width,day_height-2*food_frame_width), 5, color).table, food_width, eaters)
+    inner_food = mk_inner_food(mk_frame(RTalbe(Paragraph(name, style=styleFoodField),food_width-food_height/3-2*food_frame_width,day_height-2*food_frame_width), 5, color).table, food_width, eaters)
     return inner_food
 
 class MarkDayType(Enum):
@@ -344,7 +342,9 @@ def main_table_style():
              ('BOTTOMPADDING',(0,0),(-1,-1), 0),
              ('GRID',(0,0),(-1,-1),1,(0,0,0,)),
              #('BOX', (2,2), (3,3), 6, HexColor("#00FF00"))
-             ('FONT', (0,0), (0,0), 'Helvetica-Bold')
+             ('FONT', (0,4), (-1,4), 'Helvetica-Bold'),
+             ('FONTSIZE', (0, 4), (-1, -1), 21),
+             ('TEXTFONT', (0, 0), (-1, -1), 'Times-Bold'),
              ]
     for day in range(Day.Monday.value, Day.Sunday.value+1):
         m = day
@@ -423,14 +423,14 @@ def page0():
     add_task(fields, Day.Friday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Saturday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Sunday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
-    add_task(fields, Day.Thursday, Person.Adam, mk_simple_task("Fodbold"))
+    add_task(fields, Day.Thursday, Person.Adam, mk_simple_task("Fodbold 16:15-17:30"))
     if even_week:
-        add_task(fields, Day.Saturday, Person.Adam, mk_simple_task("Fodbold"))
+        add_task(fields, Day.Saturday, Person.Adam, mk_simple_task("Fodbold 12:00-13:20"))
 
     add_task(fields, Day.Monday, Person.Samuel, mk_food_task("Mad", col_S))
-    add_task(fields, Day.Tuesday, Person.Samuel, mk_simple_task("Fodbold kl 16:30"))
-    add_task(fields, Day.Thursday, Person.Samuel, mk_simple_task("Fodbold kl 16:30"))
-    add_task(fields, Day.Friday, Person.Samuel, mk_simple_task("Fodbold kl 15:00"))
+    add_task(fields, Day.Tuesday, Person.Samuel, mk_simple_task("Fodbold kl 17:45-19:00"))
+    add_task(fields, Day.Thursday, Person.Samuel, mk_simple_task("Fodbold kl 16:30-17:45"))
+    add_task(fields, Day.Friday, Person.Samuel, mk_simple_task("Fodbold kl 15:30-17:45"))
     add_task(fields, Day.Monday, Person.Samuel, mk_big_task("Feje k&oslash;kken", col_S))
     add_task(fields, Day.Tuesday, Person.Samuel, mk_big_task("Feje k&oslash;kken", col_S))
     add_task(fields, Day.Wednesday, Person.Samuel, mk_big_task("Feje k&oslash;kken", col_S))
