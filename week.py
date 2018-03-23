@@ -23,13 +23,13 @@ col_S = HexColor("#1da7ff")
 col_H = HexColor("#6f0511")
 col_W = HexColor("#ffffff")
 
-year = 2017
-week = 48
+year = 2018
+week = 15
 
 layout = landscape(A4)
-day_width = 55
-day_height = 78
-person_width = 123
+day_width = 53
+day_height = 73
+person_width = 118
 person_height = 25
 food_height = 78
 food_width = 250
@@ -522,5 +522,5 @@ Story.append(page0())
 Story.append(PageBreak())
 Story.append(page1())
 
-doc = SimpleDocTemplate("form_letter.pdf",pagesize=layout, rightMargin=5,leftMargin=5, topMargin=5,bottomMargin=5)
+doc = SimpleDocTemplate("form_letter.pdf",pagesize=layout, rightMargin=35,leftMargin=35, topMargin=15,bottomMargin=5)
 doc.build(Story)
