@@ -23,8 +23,6 @@ col_S = HexColor("#1da7ff")
 col_H = HexColor("#6f0511")
 col_W = HexColor("#ffffff")
 
-year = 2018
-week = 15
 
 layout = landscape(A4)
 day_width = 53
@@ -310,7 +308,7 @@ def get_mark_days(year, week, week_day):
                 notes.append(markday)
     return notes
 
-def day_str(week_day):
+def day_str(year, week, week_day):
     date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
     return date.strftime("%d %b")
 
@@ -332,7 +330,7 @@ def make_field_table(field):
                            ]))
     return subtable
 
-def main_table_style():
+def main_table_style(year, week):
     style = [
              ('BACKGROUND',(0,0),(0,-1),HexColor("#C0C0C0")),
              ('VALIGN',(0,0),(-1,-1),"TOP"),
@@ -352,7 +350,7 @@ def main_table_style():
             style.append(('BACKGROUND', (0, m), (0, m), HexColor("#ffdddd")))
     return style
 
-def page0():
+def page0(year, week):
     odd_week = bool(week%2)
     even_week = not odd_week
 
@@ -366,13 +364,13 @@ def page0():
     add_task(fields, Day.Header, Person.Samuel, mk_person("Samuel", col_S))
 
     add_task(fields, Day.Header, Person.Header, mk_week_day("Uge %d" % week))
-    add_task(fields, Day.Monday, Person.Header, mk_week_day("Mandag %s" % day_str(1)))
-    add_task(fields, Day.Tuesday, Person.Header, mk_week_day("Tirsdag %s" % day_str(2)))
-    add_task(fields, Day.Wednesday, Person.Header, mk_week_day("Onsdag %s" % day_str(3)))
-    add_task(fields, Day.Thursday, Person.Header, mk_week_day("Torsdag %s" % day_str(4)))
-    add_task(fields, Day.Friday, Person.Header, mk_week_day("Fredag %s" % day_str(5)))
-    add_task(fields, Day.Saturday, Person.Header, mk_week_day("L&oslash;rdag %s" % day_str(6)))
-    add_task(fields, Day.Sunday, Person.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
+    add_task(fields, Day.Monday, Person.Header, mk_week_day("Mandag %s" % day_str(year, week, 1)))
+    add_task(fields, Day.Tuesday, Person.Header, mk_week_day("Tirsdag %s" % day_str(year, week, 2)))
+    add_task(fields, Day.Wednesday, Person.Header, mk_week_day("Onsdag %s" % day_str(year, week, 3)))
+    add_task(fields, Day.Thursday, Person.Header, mk_week_day("Torsdag %s" % day_str(year, week, 4)))
+    add_task(fields, Day.Friday, Person.Header, mk_week_day("Fredag %s" % day_str(year, week, 5)))
+    add_task(fields, Day.Saturday, Person.Header, mk_week_day("L&oslash;rdag %s" % day_str(year, week, 6)))
+    add_task(fields, Day.Sunday, Person.Header, mk_week_day("S&oslash;ndag %s" % day_str(year, week, 7)))
 
     add_task(fields, Day.Monday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Tuesday, Person.Rolf, mk_simple_task("Vande planter"))
@@ -381,12 +379,18 @@ def page0():
     add_task(fields, Day.Friday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Saturday, Person.Rolf, mk_simple_task("Vande planter"))
     add_task(fields, Day.Sunday, Person.Rolf, mk_simple_task("Vande planter"))
-    if odd_week:
-        add_task(fields, Day.Wednesday, Person.Rolf, mk_food_task("Mad", col_R))
-        add_task(fields, Day.Sunday, Person.Rolf, mk_food_task("Mad", col_R))
+
+    add_task(fields, Day.Saturday, Person.Rolf, mk_big_task("St&oslash;vsuge", col_R))
+
     if even_week:
         add_task(fields, Day.Friday, Person.Rolf, mk_food_task("Mad", col_R))
-    add_task(fields, Day.Saturday, Person.Rolf, mk_big_task("St&oslash;vsuge", col_R))
+        add_task(fields, Day.Saturday, Person.Karen, mk_food_task("Mad", col_K))
+
+    add_task(fields, Day.Monday, Person.Samuel, mk_food_task("Mad", col_S))
+    add_task(fields, Day.Tuesday, Person.Adam, mk_food_task("Mad", col_A))
+    add_task(fields, Day.Wednesday, Person.Rolf, mk_food_task("Mad", col_R))
+    add_task(fields, Day.Thursday, Person.Cecilia, mk_food_task("Mad", col_C))
+    add_task(fields, Day.Sunday, Person.Helena, mk_food_task("Mad", col_H))
 
 
     add_task(fields, Day.Monday, Person.Karen, mk_simple_task("Vasket&oslash;j"))
@@ -397,8 +401,6 @@ def page0():
     add_task(fields, Day.Saturday, Person.Karen, mk_simple_task("Vasket&oslash;j"))
     add_task(fields, Day.Sunday, Person.Karen, mk_simple_task("Vasket&oslash;j"))
     add_task(fields, Day.Wednesday, Person.Karen, mk_big_task("Nemlig", col_K))
-    if even_week:
-        add_task(fields, Day.Saturday, Person.Karen, mk_food_task("Mad", col_K))
 
     add_task(fields, Day.Monday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Tuesday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
@@ -407,14 +409,10 @@ def page0():
     add_task(fields, Day.Friday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Saturday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
     add_task(fields, Day.Sunday, Person.Cecilia, mk_big_task("T&oslash;m opvask", col_C))
-    add_task(fields, Day.Thursday, Person.Cecilia, mk_food_task("Mad", col_C))
     add_task(fields, Day.Saturday, Person.Cecilia, mk_big_task("Toilet", col_C))
 
-    if even_week:
-        add_task(fields, Day.Sunday, Person.Helena, mk_food_task("Mad", col_H))
     add_task(fields, Day.Saturday, Person.Helena, mk_big_task("Badev&aelig;relse", col_H))
 
-    add_task(fields, Day.Tuesday, Person.Adam, mk_food_task("Mad", col_A))
     add_task(fields, Day.Wednesday, Person.Adam, mk_big_task("St&oslash;vsuge", col_A))
     add_task(fields, Day.Monday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
     add_task(fields, Day.Tuesday, Person.Adam, mk_big_task("Ordne k&oslash;kken", col_A))
@@ -427,7 +425,6 @@ def page0():
     if even_week:
         add_task(fields, Day.Saturday, Person.Adam, mk_simple_task("Fodbold 12:00-13:20"))
 
-    add_task(fields, Day.Monday, Person.Samuel, mk_food_task("Mad", col_S))
     add_task(fields, Day.Tuesday, Person.Samuel, mk_simple_task("Fodbold kl 17:45-19:00"))
     add_task(fields, Day.Thursday, Person.Samuel, mk_simple_task("Fodbold kl 16:30-17:45"))
     add_task(fields, Day.Friday, Person.Samuel, mk_simple_task("Fodbold kl 15:30-17:45"))
@@ -452,10 +449,10 @@ def page0():
     b = Table(data, colWidths=[day_width,person_width,person_width,person_width,person_width,person_width,person_width],
             rowHeights=[person_height, day_height, day_height, day_height, day_height, day_height, day_height, day_height])
     b.hAlign = "LEFT"
-    b.setStyle(main_table_style())
+    b.setStyle(main_table_style(year, week))
     return b
 
-def page1():
+def page1(year, week):
     odd_week = bool(week%2)
     even_week = not odd_week
 
@@ -465,34 +462,28 @@ def page1():
     add_task(fields, Day.Header, Page1.Notes, mk_person("Noter", col_W))
 
     add_task(fields, Day.Header, Page1.Header, mk_week_day("Uge %d" % week))
-    add_task(fields, Day.Monday, Page1.Header, mk_week_day("Mandag %s" % day_str(1)))
-    add_task(fields, Day.Tuesday, Page1.Header, mk_week_day("Tirsdag %s" % day_str(2)))
-    add_task(fields, Day.Wednesday, Page1.Header, mk_week_day("Onsdag %s" % day_str(3)))
-    add_task(fields, Day.Thursday, Page1.Header, mk_week_day("Torsdag %s" % day_str(4)))
-    add_task(fields, Day.Friday, Page1.Header, mk_week_day("Fredag %s" % day_str(5)))
-    add_task(fields, Day.Saturday, Page1.Header, mk_week_day("L&oslash;rdag %s" % day_str(6)))
-    add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(7)))
+    add_task(fields, Day.Monday, Page1.Header, mk_week_day("Mandag %s" % day_str(year, week, 1)))
+    add_task(fields, Day.Tuesday, Page1.Header, mk_week_day("Tirsdag %s" % day_str(year, week, 2)))
+    add_task(fields, Day.Wednesday, Page1.Header, mk_week_day("Onsdag %s" % day_str(year, week, 3)))
+    add_task(fields, Day.Thursday, Page1.Header, mk_week_day("Torsdag %s" % day_str(year, week, 4)))
+    add_task(fields, Day.Friday, Page1.Header, mk_week_day("Fredag %s" % day_str(year, week, 5)))
+    add_task(fields, Day.Saturday, Page1.Header, mk_week_day("L&oslash;rdag %s" % day_str(year, week, 6)))
+    add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(year, week, 7)))
 
-    if even_week:
-        add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_W, "", "RK"))
     if odd_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_W, "", "RK"))
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_W, "", "RK"))
 
-    if odd_week:
-        add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
-        add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
     if even_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
-
-    if even_week:
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_K, "Karen:", "RKCHAS"))
 
-    add_task(fields, Day.Thursday, Page1.Food, mk_food_field(col_C, "Cecilia:", "RKCHAS"))
-    if even_week:
-        add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_H, "Helena:", "RKCHAS"))
-    add_task(fields, Day.Tuesday, Page1.Food, mk_food_field(col_A, "Adam:", "RKCHAS"))
+
     add_task(fields, Day.Monday, Page1.Food, mk_food_field(col_S, "Samuel:", "RKCHAS"))
+    add_task(fields, Day.Tuesday, Page1.Food, mk_food_field(col_A, "Adam:", "RKCHAS"))
+    add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
+    add_task(fields, Day.Thursday, Page1.Food, mk_food_field(col_C, "Cecilia:", "RKCHAS"))
+    add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_H, "Helena:", "RKCHAS"))
 
     for day in Day:
         if day == Day.Header:
@@ -513,14 +504,17 @@ def page1():
     b = Table(data, colWidths=[day_width,food_width,food_width],
             rowHeights=[person_height, day_height, day_height, day_height, day_height, day_height, day_height, day_height])
     b.hAlign = "LEFT"
-    b.setStyle(main_table_style())
+    b.setStyle(main_table_style(year, week))
     return b
 
 
 Story=[]
-Story.append(page0())
-Story.append(PageBreak())
-Story.append(page1())
+year = 2018
+for week in range(36, 45):
+    #Story.append(page0(year, week))
+    #Story.append(PageBreak())
+    Story.append(page1(year, week))
+    Story.append(PageBreak())
 
 doc = SimpleDocTemplate("form_letter.pdf",pagesize=layout, rightMargin=35,leftMargin=35, topMargin=15,bottomMargin=5)
 doc.build(Story)
