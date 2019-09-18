@@ -242,6 +242,7 @@ mark_days = [
         MarkDay(year=1944, month=10, day=25, name="Gert", type=MarkDayType.Birthday),
         MarkDay(year=2008, month= 8, day=31, name="Oliver", type=MarkDayType.Birthday),
         MarkDay(year=2013, month= 1, day= 7, name="Victor", type=MarkDayType.Birthday),
+        MarkDay(year=None, month=9, day=23, name="Esben", type=MarkDayType.Birthday),
 
         MarkDay(year=2018, month=2, day=11, name="Fastelavn", type=MarkDayType.Note),
         MarkDay(year=2018, month=3, day=25, name="Palmes&oslash;ndag", type=MarkDayType.Note),
@@ -470,20 +471,21 @@ def page1(year, week):
     add_task(fields, Day.Saturday, Page1.Header, mk_week_day("L&oslash;rdag %s" % day_str(year, week, 6)))
     add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(year, week, 7)))
 
-    if odd_week:
+    if even_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_W, "", "RK"))
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_W, "", "RK"))
 
-    if even_week:
+    if odd_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_K, "Karen:", "RKCHAS"))
 
 
-    add_task(fields, Day.Monday, Page1.Food, mk_food_field(col_S, "Samuel:", "RKCHAS"))
+    add_task(fields, Day.Monday, Page1.Food, mk_food_field(col_H, "Helena:", "RKCHAS"))
     add_task(fields, Day.Tuesday, Page1.Food, mk_food_field(col_A, "Adam:", "RKCHAS"))
-    add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
+    add_task(fields, Day.Wednesday, Page1.Food, mk_food_field(col_S, "Samuel:", "RKCHAS"))
     add_task(fields, Day.Thursday, Page1.Food, mk_food_field(col_C, "Cecilia:", "RKCHAS"))
-    add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_H, "Helena:", "RKCHAS"))
+
+    add_task(fields, Day.Sunday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
 
     for day in Day:
         if day == Day.Header:
@@ -509,8 +511,8 @@ def page1(year, week):
 
 
 Story=[]
-year = 2018
-for week in range(36, 45):
+year = 2019
+for week in range(36, 48):
     #Story.append(page0(year, week))
     #Story.append(PageBreak())
     Story.append(page1(year, week))
