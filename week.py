@@ -226,23 +226,49 @@ mark_days = [
         MarkDay(year=None, month=12, day=26, name="2. Juledag", type=MarkDayType.Holiday),
         MarkDay(year=None, month=12, day=31, name="Nyt&aring;rsaften", type=MarkDayType.Holiday),
 
-        MarkDay(year=1975, month= 2, day= 9, name="Rolf", type=MarkDayType.Birthday),
-        MarkDay(year=1973, month= 9, day= 7, name="Karen", type=MarkDayType.Birthday),
-        MarkDay(year=2001, month= 1, day=13, name="Cecilia", type=MarkDayType.Birthday),
-        MarkDay(year=2002, month= 9, day=13, name="Helena", type=MarkDayType.Birthday),
-        MarkDay(year=2005, month= 4, day= 8, name="Adam", type=MarkDayType.Birthday),
-        MarkDay(year=2006, month=12, day=18, name="Samuel", type=MarkDayType.Birthday),
-        MarkDay(year=1981, month=11, day=24, name="Karina", type=MarkDayType.Birthday),
-        MarkDay(year=1981, month=11, day=24, name="Jakob", type=MarkDayType.Birthday),
-        MarkDay(year=1985, month= 4, day= 9, name="Marcus", type=MarkDayType.Birthday),
-        MarkDay(year=1979, month= 5, day= 5, name="Linda", type=MarkDayType.Birthday),
-        MarkDay(year=1973, month= 3, day=18, name="Thor", type=MarkDayType.Birthday),
-        MarkDay(year=1974, month= 7, day= 3, name="Takako", type=MarkDayType.Birthday),
-        MarkDay(year=1943, month= 3, day=16, name="Anita", type=MarkDayType.Birthday),
-        MarkDay(year=1944, month=10, day=25, name="Gert", type=MarkDayType.Birthday),
-        MarkDay(year=2008, month= 8, day=31, name="Oliver", type=MarkDayType.Birthday),
-        MarkDay(year=2013, month= 1, day= 7, name="Victor", type=MarkDayType.Birthday),
-        MarkDay(year=None, month=9, day=23, name="Esben", type=MarkDayType.Birthday),
+
+        MarkDay(month= 1, day= 7, name="Victor"       ,year=2013, type=MarkDayType.Birthday),
+        MarkDay(month= 1, day=13, name="Cecilia"      ,year=2001, type=MarkDayType.Birthday),
+        MarkDay(month= 1, day=19, name="Ellen"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 2, day= 9, name="Rolf"         ,year=1975, type=MarkDayType.Birthday),
+        MarkDay(month= 3, day=12, name="Kristine"     ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 3, day=16, name="Anita"        ,year=1943, type=MarkDayType.Birthday),
+        MarkDay(month= 3, day=17, name="Sophia"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 3, day=18, name="Thor"         ,year=1973, type=MarkDayType.Birthday),
+        MarkDay(month= 4, day= 8, name="Adam"         ,year=2005, type=MarkDayType.Birthday),
+        MarkDay(month= 4, day= 8, name="Sune"         ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 4, day= 9, name="Marcus"       ,year=1985, type=MarkDayType.Birthday),
+        MarkDay(month= 4, day=26, name="Pauline"      ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 5, day= 4, name="Christian"    ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 5, day= 5, name="Linda"        ,year=1979, type=MarkDayType.Birthday),
+        MarkDay(month= 5, day=13, name="Erik"         ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 5, day=14, name="Miguel"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 5, day=26, name="Oscar William",year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 6, day= 5, name="Vibeke"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 6, day=10, name="Jacco"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 6, day=14, name="Martin"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 7, day= 3, name="Takako"       ,year=1974, type=MarkDayType.Birthday),
+        MarkDay(month= 7, day=11, name="Henriette"    ,year=1970, type=MarkDayType.Birthday),
+        MarkDay(month= 7, day=15, name="Tobias"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 7, day=24, name="Marie-Louise" ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 7, day=24, name="Wilhelm"      ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 8, day= 7, name="August"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 8, day=13, name="Disa"         ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 8, day=16, name="Trold"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 8, day=26, name="Maria"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 8, day=31, name="Oliver"       ,year=2008, type=MarkDayType.Birthday),
+        MarkDay(month= 9, day= 7, name="Karen"        ,year=1973, type=MarkDayType.Birthday),
+        MarkDay(month= 9, day=13, name="Helena"       ,year=2002, type=MarkDayType.Birthday),
+        MarkDay(month= 9, day=13, name="Silja"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month= 9, day=23, name="Esben"        ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month=10, day=25, name="Gert"         ,year=1944, type=MarkDayType.Birthday),
+        MarkDay(month=10, day=26, name="Sune"         ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month=11, day= 6, name="Ane-Helene"   ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month=11, day=11, name="Thomas"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month=11, day=24, name="Jakob"        ,year=1981, type=MarkDayType.Birthday),
+        MarkDay(month=11, day=24, name="Karina"       ,year=1981, type=MarkDayType.Birthday),
+        MarkDay(month=12, day=17, name="Arthur"       ,year=None, type=MarkDayType.Birthday),
+        MarkDay(month=12, day=18, name="Samuel"       ,year=2006, type=MarkDayType.Birthday),
 
         MarkDay(year=2018, month=2, day=11, name="Fastelavn", type=MarkDayType.Note),
         MarkDay(year=2018, month=3, day=25, name="Palmes&oslash;ndag", type=MarkDayType.Note),
@@ -289,10 +315,13 @@ mark_days = [
  ]
 #https://www.kalender-365.dk/helligdage/2017.html
 
+def yww2date(year, week, week_day):
+    return datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day), "%G-W%V-%u") #"%Y-W%W-%w"
+
 def is_holiday(year, week, week_day):
     if week_day ==6 or week_day == 7:
         return True
-    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
+    date = yww2date(year, week, week_day)
     for markday in mark_days:
         if markday.type == MarkDayType.Holiday and (markday.year == date.year or markday.year == None) and markday.month == date.month and markday.day == date.day:
             return True
@@ -300,7 +329,7 @@ def is_holiday(year, week, week_day):
 
 def get_mark_days(year, week, week_day):
     notes = []
-    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
+    date = yww2date(year, week, week_day)
     for markday in mark_days:
         if markday.month == date.month and markday.day == date.day:
             if (markday.type == MarkDayType.Note or markday.type == MarkDayType.Holiday) and (markday.year == date.year or markday.year == None):
@@ -310,7 +339,7 @@ def get_mark_days(year, week, week_day):
     return notes
 
 def day_str(year, week, week_day):
-    date = datetime.datetime.strptime('%d-W%d-%s' % (year, week, week_day%7), "%Y-W%W-%w")
+    date = yww2date(year, week, week_day)
     return date.strftime("%d %b")
 
 
@@ -471,11 +500,11 @@ def page1(year, week):
     add_task(fields, Day.Saturday, Page1.Header, mk_week_day("L&oslash;rdag %s" % day_str(year, week, 6)))
     add_task(fields, Day.Sunday, Page1.Header, mk_week_day("S&oslash;ndag %s" % day_str(year, week, 7)))
 
-    if even_week:
+    if odd_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_W, "", "RK"))
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_W, "", "RK"))
 
-    if odd_week:
+    if even_week:
         add_task(fields, Day.Friday, Page1.Food, mk_food_field(col_R, "Rolf:", "RKCHAS"))
         add_task(fields, Day.Saturday, Page1.Food, mk_food_field(col_K, "Karen:", "RKCHAS"))
 
@@ -512,7 +541,7 @@ def page1(year, week):
 
 Story=[]
 year = 2019
-for week in range(36, 48):
+for week in range(40, 54):
     #Story.append(page0(year, week))
     #Story.append(PageBreak())
     Story.append(page1(year, week))
